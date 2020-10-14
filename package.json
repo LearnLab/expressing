@@ -1,0 +1,11 @@
+{
+  "name": "expressing",
+  "version": "1.0.0",
+  "description": "MERN stack and API (REST+RPC+HTTP Streaming) to express and test how we feel",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Diego Castillo",
+  "license": "ISC"
+}

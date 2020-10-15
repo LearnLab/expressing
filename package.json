@@ -1,14 +1,26 @@
 {
-  "name": "expressing",
-  "version": "1.0.0",
-  "description": "MERN stack with API (REST+RPC+HTTP Streaming) to express and test how we feel.",
-  "main": "index.js",
-  "author": "Diego Castillo <61103323+LearnLab@users.noreply.github.com>",
-  "license": "MIT",
-  "scripts": {
-	"start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+	"name": "expressing",
+	"version": "1.0.0",
+	"description": "MERN stack with API (REST+RPC+HTTP Streaming) to express and test how we feel.",
+	"main": "index.js",
+	"author": "Diego Castillo <61103323+LearnLab@users.noreply.github.com>",
+	"license": "MIT",
+	"scripts": {
+		"start": "node index.js",
+		"test": "cross-env NODE_ENV=test jest"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"coveragePathIgnorePatterns": [
+			"/node_modules/"
+		]
+	},
+	"dependencies": {
+		"express": "^4.17.1"
+	},
+	"devDependencies": {
+		"cross-env": "^7.0.2",
+		"jest": "^26.5.3",
+		"supertest": "^5.0.0"
+	}
 }

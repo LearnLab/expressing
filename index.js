@@ -4,12 +4,18 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-	res.type('text/plain');
-	res.send('This is the server running');
-});
+// Import routes
+const apiRoutes = require('./routes/api');
 
-app.listen(port, () => {
-	console.log(`Express started in port ${port}.`)
-	console.log('Press Ctrl + c to terminate.');
-});
+app.use(express.json());
+app.use('/api/v1', apiRoutes);
+
+// Check if the app should listen or be exported as a module
+if (require.main === module) {
+	app.listen(port, () => {
+		console.log(`Express started in port ${port}.`)
+		console.log('Press Ctrl + c to terminate.');
+	});
+} else {
+	module.exports = app;
+}

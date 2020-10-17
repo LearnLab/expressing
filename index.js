@@ -1,10 +1,12 @@
 const express = require('express');
-
 const app = express();
+
+// Execute database code
+require('./models/db');
 
 const port = process.env.PORT || 5000;
 
-// Import routes
+// Import api routes
 const apiRoutes = require('./routes/api');
 
 app.use(express.json());

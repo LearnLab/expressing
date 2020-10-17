@@ -13,7 +13,7 @@ Create a user
 GET /api/users/{user}
 Get all recorded information from the user
 
-PUT,PATCH /api/users/{user}
+PUT /api/users/{user}
 Update the recorded information from the user
 
 DELETE /api/users/{user}

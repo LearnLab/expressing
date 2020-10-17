@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 const apiRoutes = require('./routes/api');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/v1', apiRoutes);
 
 // Check if the app should listen or be exported as a module

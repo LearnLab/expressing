@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 
 // Execute database code
+const passport = require('passport');
 require('./models/db');
+require('./config/passport');
 
 const port = process.env.PORT || 5000;
 
@@ -10,6 +12,7 @@ const port = process.env.PORT || 5000;
 const apiRoutes = require('./routes/api');
 
 // Middlewares
+app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

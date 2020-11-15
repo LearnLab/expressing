@@ -25,6 +25,26 @@ app.use('/api', (req, res, next) => {
 
 app.use('/api/v1', apiRoutes);
 
+/**
+ * Error Handlers
+ */
+// Unauthorized Error
+app.use((err, req, res, next) => {
+	if (err.name === 'UnauthorizedError') {
+		res
+			.status(401)
+			.json({
+				'status': 'failure',
+				'data': {
+					'error': {
+						'name': err.name,
+						'message': err.message
+					}
+				}
+			});
+	}
+});
+
 // Check if the app should listen or be exported as a module
 if (require.main === module) {
 	app.listen(port, () => {

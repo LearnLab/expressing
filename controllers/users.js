@@ -30,7 +30,12 @@ const getUsers = (req, res) => {
 };
 
 const getUser = (req, res) => {
-	User.findOne({ username: req.params.user }, 'name email username', (err, user) => {
+	let select = 'name username';
+
+	if (req.payload && req.payload.username && req.payload.username === req.params.user)
+		select = 'name email username';
+
+	User.findOne({ username: req.params.user }, select, (err, user) => {
 		if(err) {
 			return res
 				.status(400)
@@ -54,56 +59,85 @@ const getUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-	User.findOneAndUpdate({ username: req.params.user }, {
-		name: req.body.name,
-		email: req.body.email
-	}, {
-		'new': true,
-		fields: 'name email username',
-		runValidators: true
-	}, (err, user) => {
-		if(err) {
-			return res
-				.status(400)
-				.json({
-					'status': 'error',
-					'data': {
-						'error': err.errors
+	if (req.payload && req.payload.username && req.payload.username === req.params.user) {
+		User.findOneAndUpdate({ username: req.params.user }, {
+			name: req.body.name,
+			email: req.body.email
+		}, {
+			'new': true,
+			fields: 'name email username',
+			runValidators: true
+		}, (err, user) => {
+			if(err) {
+				return res
+					.status(400)
+					.json({
+						'status': 'error',
+						'data': {
+							'error': err.errors
+						}
+					});
+			} else {
+				return res
+					.status(201)
+					.json({
+						'status': 'success',
+						'data': {
+							'user': user
+						}
+					});
+			}
+		});
+	} else {
+		return res
+			.status(401)
+			.json({
+				'status': 'unauthorized',
+				'data': {
+					'error': {
+						'name': 'Unauthorized Error',
+						'message': 'You are not allowed to update another user\'s profile information.'
 					}
-				});
-		} else {
-			return res
-				.status(201)
-				.json({
-					'status': 'success',
-					'data': {
-						'user': user
-					}
-				});
-		}
-	});
+				}
+			});
+	}
 };
 
 const deleteUser = (req, res) => {
-	User.findOneAndDelete({ username: req.params.user }, (err) => {
-		if(err) {
-			return res
-				.status(400)
-				.json({
-					'status': 'error',
-					'data': {
-						'error': err.errors
+	// Firsth check that there's a JWT object
+	if(req.payload && req.payload.username && req.payload.username === req.params.user) {
+		User.findOneAndDelete({ username: req.params.user }, (err) => {
+			if(err) {
+				return res
+					.status(400)
+					.json({
+						'status': 'error',
+						'data': {
+							'error': err.errors
+						}
+					});
+			} else {
+				return res
+					.status(201)
+					.json({
+						'status': 'success',
+						'data': { }
+					});
+			}
+		});
+	} else {
+		return res
+			.status(404)
+			.json({
+				'status': 'error',
+				'data': {
+					'error': {
+						'name': 'Forbidden access.',
+						'message': 'You cannot delete another person\'s account.'
 					}
-				});
-		} else {
-			return res
-				.status(201)
-				.json({
-					'status': 'success',
-					'data': { }
-				});
-		}
-	});
+				}
+			});
+	}
 };
 
 module.exports = {

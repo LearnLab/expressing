@@ -25,7 +25,12 @@ const register = (req, res) => {
 	user.email = req.body.email;
 	user.username = req.body.username;
 	user.setPassword(req.body.password);
-	console.log(user);
+
+	const publicUser = {
+		name: user.name, 
+		email: user.email,
+		username: user.username
+	};
 
 	user.save((err) => {
 		if(err) {
@@ -43,7 +48,7 @@ const register = (req, res) => {
 				.json({
 					'status': 'success',
 					'data': {
-						'user': user,
+						'user': publicUser,
 						'token': token
 					}
 				});
@@ -78,13 +83,18 @@ const login = (req, res) => {
 				.json(info);
 		} else {
 			token = user.generateJWT();
+			const publicUser = {
+				name: user.name,
+				email: user.email,
+				username: user.username
+			};
 
 			return res
-				.status(401)
+				.status(201)
 				.json({
 					'status': 'success',
 					'data': {
-						'user': user,
+						'user': publicUser,
 						'token': token
 					}
 				});
